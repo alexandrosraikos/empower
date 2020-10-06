@@ -8,7 +8,7 @@ function App() {
       What is better? To be born good or to overcome your evil nature through great effort?
       </blockquote>
       <cite>Paarthurnax</cite>
-      <button>I need another</button>
+      <button>I need another one</button>
     </section>
   );
 }
