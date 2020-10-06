@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
   position:absolute;
   top:50%;
   left:50%;
@@ -10,34 +9,64 @@
 .App blockquote {
   font-size:5vw;
   font-weight:bold;
+  padding:0;
+  margin:0
 }
 
 .App cite {
   font-size: 2vw;
   opacity:0.7;
+  display:block;
+  margin:40px 0;
 }
 
 .App button {
-  border:none;
+  border:2px solid #114641;
+  border-radius:7px;
   display:block;
   background:none;
   font-weight:bold;
   color:#114641;
   font-size:16px;
-  margin:60px auto;
+  margin:15% auto 10px auto;
 }
 
 .App button:hover {
-  text-decoration: underline;
+  background: #114641;
+  color:white;
   opacity:0.8;
   cursor:pointer;
+}
+
+.App button:active {
+  opacity:0.7;
+}
+
+.App .latencyIndicator {
+  font-family:monospace;
+  opacity:0.8;
+  text-align: center;
+  font-size:12px;
+  font-weight:bold;
+  color:green;
+  animation:none;
+}
+
+.App .error {
+  color: red;
+  animation: pop-in 2s 0.3s ease-in-out forwards;
+}
+
+@keyframes pop-in {
+  from {opacity:0.8}
+  to {opacity:0}
 }
 
 @media screen and (max-width:600px) {
   .App {
     position:static;
     transform:none;
-    width:100%;
+    margin:50px auto;
   }
   .App blockquote {
     font-size:6vh;
@@ -45,5 +74,11 @@
 
   .App cite {
     font-size:4vh;
+  }
+
+  .App button {
+    padding:10px;
+    border-radius: 15px;
+    margin:20px auto;
   }
 }
