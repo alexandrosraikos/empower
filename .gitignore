@@ -1,3 +1,5 @@
+/.vscode
+
 /handler/Packages
 /handler/.build
 /handler/xcuserdata
