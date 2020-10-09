@@ -27,7 +27,7 @@ class App extends React.Component {
     this.setState({
       loading: true
     });
-    fetch("http://localhost:8080/quotes?uuid="+sessionStorage.getItem('uuid'), {
+    fetch("http://handler:8080/quotes?uuid="+sessionStorage.getItem('uuid'), {
         mode: 'cors',
         headers: {'Access-Control-Allow-Origin':'*'}
       }
