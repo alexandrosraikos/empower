@@ -1,1 +1,1 @@
-mongoimport --db empower --collection quotes --drop --file quotes.json --jsonArray
+mongoimport --db empower --collection quotes --drop --file ./quotes.json --jsonArray
