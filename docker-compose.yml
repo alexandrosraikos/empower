@@ -5,7 +5,7 @@
   # MongoDB persistence
 # -----
   
-version: '3.8'
+version: '3.7'
 
 volumes:
   db_data:
@@ -18,35 +18,35 @@ x-shared_environment: &shared_environment
   DATABASE_PASSWORD: vapor_password
 
 services:
-  # The back-end request  handler.
-  empower-handler:
-    build:
-      context: ./handler
-      dockerfile: ./handler/Dockerfile
-    environment:
-      <<: *shared_environment
-    depends_on:
-      - db
-    ports:
-      - '1997:8080'
-    # user: '0' # uncomment to run as root for testing purposes even though Dockerfile defines 'vapor' user.
-    command: ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
-  # The front-end web server.
-  empower-storefront:
-    build:
-      context: ./storefront
-      dockerfile: ./storefront/Dockerfile
-    ports:
-      - '1998:3000'
-    volumes:
-      - '/app/node_modules'
-      - './storefront:/app'
   # The database.
   empower-db:
     image: mongo:latest
     hostname: empower-db
     ports:
-      - "1999:27017"
+      - "1997:27017"
     volumes:
       - './database:/config'
     command: ["mongoimport", "--db", "empower", "--collection", "quotes", "--drop", "--file", "/config/quotes.json", "--jsonArray"]
+  # The back-end request  handler.
+  empower-handler:
+    build:
+      context: handler
+      dockerfile: Dockerfile
+    environment:
+      <<: *shared_environment
+    depends_on:
+      - empower-db
+    ports:
+      - '1998:8080'
+    # user: '0' # uncomment to run as root for testing purposes even though Dockerfile defines 'vapor' user.
+    command: ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
+  # The front-end web server.
+  empower-storefront:
+    build:
+      context: storefront
+      dockerfile: Dockerfile
+    ports:
+      - '1999:3000'
+    volumes:
+      - '/app/node_modules'
+      - './storefront:/app'
