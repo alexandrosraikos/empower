@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
+import dotenv from 'dotenv';
 
 class App extends React.Component {
   constructor() {
@@ -27,8 +28,8 @@ class App extends React.Component {
     this.setState({
       loading: true
     });
-    const backendUrl = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? "localhost" : "backend";
-    fetch("http://"+backendUrl+":8080/quotes?uuid="+sessionStorage.getItem('uuid'), {
+    const url = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? "localhost" : process.env.REACT_APP_BACKEND_URL;
+    fetch("http://"+url+":8080/quotes?uuid="+sessionStorage.getItem('uuid'), {
         mode: 'cors',
         headers: {'Access-Control-Allow-Origin':'*'}
       }
