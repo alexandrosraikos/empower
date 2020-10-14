@@ -8,7 +8,7 @@ RUN npm ci --silent
 RUN npm install react-scripts@3.4.1 -g --silent
 COPY . ./
 ENV BACKEND_URL whaatiswhaaaat
-CMD printf "REACT_APP_BACKEND_URL=$BACKEND_URL" >> .env
+CMD echo "REACT_APP_BACKEND_URL=$BACKEND_URL" >> .env
 RUN npm run build
 
 # production environment
