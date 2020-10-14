@@ -1,0 +1,1 @@
+docker build --build-arg BACKEND_URL=exampleurl -t empower/front:1.0 . && docker run -p 80:80 --name empower-front empower/front:1.0
