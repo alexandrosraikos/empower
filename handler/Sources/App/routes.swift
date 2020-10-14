@@ -8,7 +8,8 @@ func routes(_ app: Application) throws {
         // Retrieve user session and add to active ones.
         let uuid = req.query[String.self, at: "uuid"]!
         sessions.insert(uuid)
-        
+        // TODO: Count RTT for Mongo request.
+        // TODO: Expose NetData API.
         // Retrieve random quote and return
         return Quote
             .query(on: app.db)
