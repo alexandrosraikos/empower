@@ -7,9 +7,9 @@ COPY package-lock.json ./
 RUN npm ci --silent
 RUN npm install react-scripts@3.4.1 -g --silent
 COPY . ./
-ENV BACKEND_URL whaatiswhaaaat
-CMD echo "REACT_APP_BACKEND_URL=$BACKEND_URL" >> .env
-RUN npm run build
+# --> add --build-arg to docker build for customisation.
+ARG BACKEND_URL=backend
+RUN echo "REACT_APP_BACKEND_URL=$BACKEND_URL" >> .env && npm run build
 
 # production environment
 FROM nginx:stable-alpine
