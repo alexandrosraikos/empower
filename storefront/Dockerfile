@@ -8,7 +8,7 @@ RUN npm ci --silent
 RUN npm install react-scripts@3.4.1 -g --silent
 COPY . ./
 # --> add --build-arg to docker build for customisation.
-ARG BACKEND_URL=backend
+ARG BACKEND_URL=empower-backend
 RUN echo "REACT_APP_BACKEND_URL=$BACKEND_URL" >> .env && npm run build
 
 # production environment
