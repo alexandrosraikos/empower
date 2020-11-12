@@ -21,12 +21,11 @@ func routes(_ app: Application) throws {
     let activeUserCount = prometheusClient.createGauge(forType: Int.self, named: "recently_active_users")
     
     // -- METRIC: Requests routed between metric scrapes.
-    var numberOfRequests = 0
-    let requestRate = prometheusClient.createGauge(forType: Int.self, named: "request_rate")
+    let numberOfRequests = prometheusClient.createGauge(forType: Int.self, named: "request_rate")
     
     // Route for the front-end web application.
     app.get("quotes") { req -> EventLoopFuture<Quote> in
-        numberOfRequests += 1
+        numberOfRequests.inc()
         dbRequestTime = Date()
     
         // Count RTT for Mongo request.
@@ -48,9 +47,6 @@ func routes(_ app: Application) throws {
     
     // Route for the Netdata Prometheus collector.
     app.get("metrics") { req -> EventLoopFuture<String> in
-        // -- Exposing request rate.
-        requestRate.set(numberOfRequests)
-        numberOfRequests = 0 // <-- Reset count after scrape.
         // -- Exposing active session count.
         activeUserCount.set(app.sessions.memory.storage.sessions.count)
         
