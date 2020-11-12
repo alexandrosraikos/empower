@@ -21,7 +21,7 @@ func routes(_ app: Application) throws {
     let activeUserCount = prometheusClient.createGauge(forType: Int.self, named: "recently_active_users")
     
     // -- METRIC: Requests routed between metric scrapes.
-    let numberOfRequests = prometheusClient.createGauge(forType: Int.self, named: "request_rate")
+    let numberOfRequests = prometheusClient.createGauge(forType: Int.self, named: "total_requests")
     
     // Route for the front-end web application.
     app.get("quotes") { req -> EventLoopFuture<Quote> in
