@@ -1,16 +1,34 @@
 import Fluent
 import Vapor
+import Metrics
+import Prometheus
 
 func routes(_ app: Application) throws {
-    var sessions = Set<String>()
-    var dbRequestTime: Date?
-    var dbResponseTime: TimeInterval?
     
+    // ---- Session keeping.
+    let sessions = app.grouped(app.sessions.middleware)
+    
+    // ---- Initialize Prometheus exporting &  metrics.
+    let prometheusClient = PrometheusClient()
+    MetricsSystem.bootstrap(prometheusClient)
+    let metricsCollector = try MetricsSystem.prometheus()
+    
+    // -- METRIC: Response time for each database request.
+    var dbRequestTime = Date()
+    let dbResponseTime = prometheusClient.createGauge(forType: Int.self, named: "database_response_time")
+    
+    // -- METRIC: Active sessions.
+    let activeUserCount = prometheusClient.createGauge(forType: Int.self, named: "recently_active_users")
+    
+    // -- METRIC: Requests routed between metric scrapes.
+    var numberOfRequests = 0
+    let requestRate = prometheusClient.createGauge(forType: Int.self, named: "request_rate")
+    
+    // Route for the front-end web application.
     app.get("quotes") { req -> EventLoopFuture<Quote> in
+        numberOfRequests += 1
         dbRequestTime = Date()
-        // Retrieve user session and add to active ones.
-        let uuid = req.query[String.self, at: "uuid"]!
-        sessions.insert(uuid)
+    
         // Count RTT for Mongo request.
         let quote = Quote
             .query(on: app.db)
@@ -18,16 +36,25 @@ func routes(_ app: Application) throws {
             .first()
             ??
             Quote(quote: "An error has occured", citation: "Your Swift server")
+        
+        // Add last request's database response time.
         quote.whenSuccess {q in
-            dbResponseTime = Date().timeIntervalSince(dbRequestTime!)*1000.0
-            print("The response time is", Int(dbResponseTime!),"ms.")
+            dbResponseTime.inc(Int(Date().timeIntervalSince(dbRequestTime)*1000.0))
         }
-        // TODO: Expose NetData API.
+        
         // Retrieve random quote and return
         return quote
     }
     
-    app.post("metrics") { req -> Int in
-        return Int(dbResponseTime!)
+    // Route for the Netdata Prometheus collector.
+    app.get("metrics") { req -> EventLoopFuture<String> in
+        // -- Exposing request rate.
+        requestRate.set(numberOfRequests)
+        // -- Exposing active session count.
+        activeUserCount.set(app.sessions.memory.storage.sessions.count)
+        
+        let metricResponse = req.eventLoop.makePromise(of: String.self)
+        metricsCollector.collect(into: metricResponse)
+        return metricResponse.futureResult
     }
 }
