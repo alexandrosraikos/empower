@@ -16,12 +16,6 @@ public func configure(_ app: Application) throws {
     quoteCount = try! Quote.query(on: app.db).count().wait()
     print("[ NOTICE ] There are \(quoteCount) quotes in the database.")
     
-    // ---- Session persistence.
-    app.sessions.configuration.cookieFactory = { sessionID in
-        .init(string: sessionID.string, isSecure: true)
-    }
-    app.sessions.use(.memory)
-    
     // ---- Initialization
     let corsConfiguration = CORSMiddleware.Configuration(
         allowedOrigin: .all,
@@ -29,6 +23,13 @@ public func configure(_ app: Application) throws {
         allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin]
     )
     app.middleware.use(CORSMiddleware(configuration: corsConfiguration))
+    
+    // ---- Session persistence.
+    app.sessions.configuration.cookieFactory = { sessionID in
+        .init(string: sessionID.string, isSecure: true)
+    }
+    app.sessions.use(.memory)
+    
     
     // register routes
     try routes(app)
