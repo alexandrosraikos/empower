@@ -50,6 +50,7 @@ func routes(_ app: Application) throws {
     app.get("metrics") { req -> EventLoopFuture<String> in
         // -- Exposing request rate.
         requestRate.set(numberOfRequests)
+        numberOfRequests = 0 // <-- Reset count after scrape.
         // -- Exposing active session count.
         activeUserCount.set(app.sessions.memory.storage.sessions.count)
         
