@@ -33,7 +33,7 @@ class App extends React.Component {
         method: 'GET',
         mode: 'cors',
         headers: {
-          'Access-Control-Allow-Origin':'http://'+url
+          'Access-Control-Allow-Origin':'http://'+url+':8080'
         },
         credentials: 'include'
       }
