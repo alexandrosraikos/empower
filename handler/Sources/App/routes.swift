@@ -22,7 +22,7 @@ func routes(_ app: Application) throws {
     let activeUserCount = prometheusClient.createGauge(forType: Int.self, named: "recently_active_users")
     
     // Route for the front-end web application.
-    app.get("quotes") { req -> EventLoopFuture<Quote> in
+    app.post("quotes") { req -> EventLoopFuture<Quote> in
         numberOfRequests.inc()
         dbRequestTime = Date()
         

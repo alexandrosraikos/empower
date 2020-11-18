@@ -28,12 +28,13 @@ class App extends React.Component {
     this.setState({
       loading: true
     });
-    const url = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? "localhost" : process.env.REACT_APP_BACKEND_URL;
-    fetch("http://"+url+":8080/quotes?uuid="+sessionStorage.getItem('uuid'), {
-        method: 'GET',
+    const backend = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? "localhost" : process.env.REACT_APP_BACKEND_URL;
+    const url = 'http://'+url+':8080';
+    fetch(url+'/quotes?uuid='+sessionStorage.getItem('uuid'), {
+        method: 'POST',
         mode: 'cors',
         headers: {
-          'Access-Control-Allow-Origin':'http://'+url+':8080'
+          'Access-Control-Allow-Origin':url
         },
         credentials: 'include'
       }
