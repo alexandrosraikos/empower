@@ -27,7 +27,8 @@ func routes(_ app: Application) throws {
         dbRequestTime = Date()
         
         // Capture session.
-        req.session.data["uuid"] = req.parameters.get("uuid")
+        let user = try req.content.decode(User.self)
+        req.session.data["uuid"] = user.uuid
         
         // Count RTT for Mongo request.
         let quote = Quote
