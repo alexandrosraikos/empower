@@ -32,8 +32,9 @@ class App extends React.Component {
     fetch("http://"+url+":8080/quotes?uuid="+sessionStorage.getItem('uuid'), {
         mode: 'cors',
         headers: {
-          'Access-Control-Allow-Origin':'*'
-        }
+          'Access-Control-Allow-Origin':'http://'+url
+        },
+        credentials: 'include'
       }
     )
       .then(res => res.json())
