@@ -33,9 +33,8 @@ class App extends React.Component {
         mode: 'cors',
         headers: {
           'Access-Control-Allow-Origin':'*',
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT'
-        },
+          'SameSite':'None'
+        }
       }
     )
       .then(res => res.json())
