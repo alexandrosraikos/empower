@@ -33,8 +33,6 @@ class App extends React.Component {
         mode: 'cors',
         headers: {
           'Access-Control-Allow-Origin':'*',
-          'Access-Control-Expose-Headers':'Set-Cookie',
-          'Access-Control-Allow-Headers':'Cookie',
           'SameSite':'Lax'
         },
       }
