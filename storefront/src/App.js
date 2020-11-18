@@ -29,7 +29,7 @@ class App extends React.Component {
       loading: true
     });
     const backend = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? "localhost" : process.env.REACT_APP_BACKEND_URL;
-    const url = 'http://'+url+':8080';
+    const url = 'http://'+backend+':8080';
     fetch(url+'/quotes', {
         method: 'POST',
         mode: 'cors',
