@@ -34,6 +34,7 @@ class App extends React.Component {
         method: 'POST',
         mode: 'cors',
         headers: {
+          "Content-Type": "application/json",
           'Access-Control-Allow-Origin':url
         },
         credentials: 'include',
