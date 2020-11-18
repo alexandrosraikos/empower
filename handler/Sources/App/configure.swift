@@ -26,9 +26,6 @@ public func configure(_ app: Application) throws {
     
     // ---- Session persistence.
     app.middleware.use(app.sessions.middleware)
-    app.sessions.configuration.cookieFactory = { sessionID in
-        .init(string: sessionID.string, isSecure: true)
-    }
     app.sessions.use(.memory)
     
     

@@ -11,7 +11,6 @@ func routes(_ app: Application) throws {
     let metricsCollector = try MetricsSystem.prometheus()
     
     // -- METRIC: Response time for each database request.
-    // ERROR: GAUGE AGGREGATES!
     var dbRequestTime = Date()
     let dbResponseTime = prometheusClient.createGauge(forType: Int.self, named: "database_response_time")
 
@@ -19,7 +18,7 @@ func routes(_ app: Application) throws {
     let numberOfRequests = prometheusClient.createGauge(forType: Int.self, named: "total_requests")
     
     // -- METRIC: Active sessions.
-    // ERROR: STAYS AT 0.
+    // ERROR: ADDS EVERY REQUEST.
     let activeUserCount = prometheusClient.createGauge(forType: Int.self, named: "recently_active_users")
     
     // Route for the front-end web application.
@@ -28,7 +27,9 @@ func routes(_ app: Application) throws {
         dbRequestTime = Date()
         
         // Capture session.
-        req.session.data["uuid"] = req.parameters.get("uuid")
+        if (req.session.data["uuid"] == nil) {
+            req.session.data["uuid"] = req.parameters.get("uuid")!
+        }
         
         // Count RTT for Mongo request.
         let quote = Quote
