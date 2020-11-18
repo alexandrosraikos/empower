@@ -30,11 +30,11 @@ class App extends React.Component {
     });
     const url = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? "localhost" : process.env.REACT_APP_BACKEND_URL;
     fetch("http://"+url+":8080/quotes?uuid="+sessionStorage.getItem('uuid'), {
+        method: 'GET',
         mode: 'cors',
         headers: {
           'Access-Control-Allow-Origin':'http://'+url
-        },
-        credentials: 'include'
+        }
       }
     )
       .then(res => res.json())

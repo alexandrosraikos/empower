@@ -20,7 +20,7 @@ public func configure(_ app: Application) throws {
     app.middleware.use(app.sessions.middleware)
     app.sessions.use(.memory)
     
-    // ---- Initialization
+    // ---- CORS support
     let corsConfiguration = CORSMiddleware.Configuration(
         allowedOrigin: .all,
         allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
