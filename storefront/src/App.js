@@ -33,7 +33,7 @@ class App extends React.Component {
         mode: 'cors',
         headers: {
           'Access-Control-Allow-Origin':'*',
-          'credentials' : 'include'
+          'credentials' : 'include',
           'SameSite':'None'
         },
       }
