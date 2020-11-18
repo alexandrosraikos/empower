@@ -34,7 +34,7 @@ class App extends React.Component {
         headers: {
           'Access-Control-Allow-Origin':'http://'+url
         },
-        credentials: 'same-origin'
+        credentials: 'include'
       }
     )
       .then(res => res.json())
