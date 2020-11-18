@@ -27,9 +27,7 @@ func routes(_ app: Application) throws {
         dbRequestTime = Date()
         
         // Capture session.
-        if (req.session.data["uuid"] == nil) {
-            req.session.data["uuid"] = req.parameters.get("uuid")!
-        }
+        req.session.data["uuid"] = req.parameters.get("uuid")
         
         // Count RTT for Mongo request.
         let quote = Quote
